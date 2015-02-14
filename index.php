@@ -16,30 +16,25 @@ die("404 Not Found");
  //$text = file_get_contents("file/".$pages.".md");
 $handle = @fopen("file/".$pages.".md", "r");
 if($handle){
+  $havehr=0;
 while(!feof($handle)){
     $texttemp = fgets($handle, 4096);
   if(substr($texttemp, 0,3)=="***"){
+    $havehr=1;
    break;
   }else{
    $temparray[]=$texttemp;
   }
 }
   $heading="";
-  $subheading="";
-if(count($temparray)!=0){
+  $temptext="";
+if($havehr==1){
   foreach ($temparray as $key => $val)
   {
-    if($val!=""&&substr($val, 0,1)=="#"){
-      $heading=trim(substr($val, 1));
-    }
-   if($val!=""&&substr($val, 0,1)!="#"){
-     $subheading=$subheading.trim($val);
-   }
+$temptext=$temptext."\n".$val;
   }
-}else{
-  $heading="无标题";
-  $subheading="";
-}
+ $heading = MarkdownExtra::defaultTransform($temptext);
+}else{$heading="无标题";}
 $text="";
     while (!feof($handle)) {
         $text = $text.fgets($handle, 4096);
@@ -54,7 +49,7 @@ $text="";
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title><?php echo $filesetting[$pages]['heading'] ?> - <?php echo $Gsetting["title"]?></title>
+  <title><?php echo $filesetting[$pages] ?> - <?php echo $Gsetting["title"]?></title>
   <meta name="description" content="">
   <meta name="keywords" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -105,7 +100,7 @@ $text="";
   <div class="admin-content">
 
     <div class="am-cf am-padding">
-      <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg"><?PHP echo $heading;?></strong> / <small><?PHP echo $subheading;?></small></div>
+      <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg"><?php echo $heading;?></strong></div>
     </div>
 
     <div class="am-g">
