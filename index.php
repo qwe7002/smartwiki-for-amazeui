@@ -13,7 +13,39 @@ $pages=$_GET['page'];
 if(!file_exists("file/".$pages.".md")){
 die("404 Not Found");
 }else{
- $text = file_get_contents("file/".$pages.".md");
+ //$text = file_get_contents("file/".$pages.".md");
+$handle = @fopen("file/".$pages.".md", "r");
+if($handle){
+while(!feof($handle)){
+    $texttemp = fgets($handle, 4096);
+  if(substr($texttemp, 0,3)=="***"){
+   break;
+  }else{
+   $temparray[]=$texttemp;
+  }
+}
+  $heading="";
+  $subheading="";
+if(count($temparray)!=0){
+  foreach ($temparray as $key => $val)
+  {
+    if($val!=""&&substr($val, 0,1)=="#"){
+      $heading=trim(substr($val, 1));
+    }
+   if($val!=""&&substr($val, 0,1)!="#"){
+     $subheading=$subheading.trim($val);
+   }
+  }
+}else{
+  $heading="无标题";
+  $subheading="";
+}
+$text="";
+    while (!feof($handle)) {
+        $text = $text.fgets($handle, 4096);
+    }
+    fclose($handle);
+}
  $html = MarkdownExtra::defaultTransform($text);
      }
 ?>
@@ -60,14 +92,7 @@ die("404 Not Found");
         <?PHP
             foreach ($filesetting as $key => $val)
             {
-             if (is_array ($val))
-             {
-              if($key==$pages){
-              echo '<li class= "active"><a href="?page='.$key.'">'.$val["heading"].'</a></li>';
-              }else{
-              echo '<li><a href="?page='.$key.'">'.$val["heading"].'</a></li>';
-             }
-             }
+              echo '<li><a href="?page='.$key.'">'.$val.'</a></li>';
             }
             ?>
       </ul>
@@ -80,7 +105,7 @@ die("404 Not Found");
   <div class="admin-content">
 
     <div class="am-cf am-padding">
-      <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg"><?PHP echo $filesetting[$pages]['heading'];?></strong> / <small><?PHP echo $filesetting[$pages]['subheading'];?></small></div>
+      <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg"><?PHP echo $heading;?></strong> / <small><?PHP echo $subheading;?></small></div>
     </div>
 
     <div class="am-g">
