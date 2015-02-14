@@ -17,10 +17,12 @@
 * 您可以通过修改 conf.php 文件的<code>$Gsetting</code>来指定该网站的名称以及页脚信息
 
 #感谢
-感谢优秀的开源 markdown 库 php-markdown以及优秀的前端框架 Bootstrap
+感谢优秀的开源 markdown 库 php-markdown以及优秀的前端框架 Bootstrap和 amazeui
 
 * [php-markdown](https://github.com/michelf/php-markdown)
 * [Bootstrap](https://github.com/twbs/bootstrap)
+* [amazeui](https://github.com/allmobilize/amazeui/)
+
 
 #版权
 采用MIT协议分发
