@@ -86,8 +86,22 @@ $text="";
       <ul class="am-list admin-sidebar-list">
         <?PHP
             foreach ($filesetting as $key => $val)
-            {
+            { if(is_array($val)){
+              echo '<li class="admin-parent">
+        <a class="am-cf" data-am-collapse="{target: \'#collapse-nav\'}"> '.$val['标题'].'<span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+        <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav">';
+              foreach ($val as $id => $return)
+                {
+                  if($id!="标题"){
+                echo '<li><a href="?page='.$key."_".$id.'" class="am-cf">'.$return.'</a></li>';
+            
+                                }
+                }
+                echo '</ul>
+      </li>';
+              }else{
               echo '<li><a href="?page='.$key.'">'.$val.'</a></li>';
+              }
             }
             ?>
       </ul>
